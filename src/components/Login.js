@@ -3,17 +3,10 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
   Heading,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   Stack,
 } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
-import "../styles/Login.scss";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {

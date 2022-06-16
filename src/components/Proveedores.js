@@ -22,16 +22,18 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import axios from "axios";
+import Fuse from "fuse.js";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import NavBar from "./NavBar";
 
 const Proveedores = ({ url }) => {
   const [Proveedores, setProveedores] = useState([]);
+  const [Search, setSearch] = useState("");
+  const [DataSearch, setDataSearch] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [values, handleInputChange, setValues, reset] = useForm({
+  const [values, handleInputChange] = useForm({
     Tipo: "",
     Nombre_Proveedor: "",
     Contacto: "",
@@ -51,6 +53,10 @@ const Proveedores = ({ url }) => {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const deleteData = (id) => {
     axios
@@ -75,9 +81,20 @@ const Proveedores = ({ url }) => {
       .catch((error) => console.log(error));
   };
 
+  /////////////////////// Barra de Busqueda ///////////////////////
   useEffect(() => {
-    getData();
-  }, []);
+    if (Search.length >= 1) {
+      const fuse = new Fuse(Proveedores, {
+        keys: ["Tipo", "Nombre_Producto"],
+        includeScore: true,
+        threshold: 0.2,
+      });
+      const result = fuse.search(Search);
+      setDataSearch(result.map((item) => item.item));
+    } else {
+      setDataSearch(Proveedores);
+    }
+  }, [Proveedores, Search]);
 
   return (
     <div className="ContainerAll">
@@ -92,6 +109,9 @@ const Proveedores = ({ url }) => {
               placeholder="Buscar Usuario"
               size="md"
               width={{ base: "300px", md: "500px" }}
+              onChange={(e) => {
+                setSearch(e.currentTarget.value);
+              }}
             />
           </Box>
 
@@ -201,7 +221,7 @@ const Proveedores = ({ url }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {Proveedores.map((data) => (
+            {DataSearch.map((data) => (
               <Tr key={data.id}>
                 <Td>{data.id}</Td>
                 <Td>{data.Tipo}</Td>

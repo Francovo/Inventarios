@@ -16,7 +16,7 @@ const AppRouter = () => {
       <Routes>
         {isAuthenticated ? (
           <>
-            <Route path="/"  element={<Home url={url + "inventario/"} />} />
+            <Route path="/" element={<Home url={url + "inventario/"} />} />
             <Route path="/nav" element={<NavBar />} />
             <Route
               path="/proveedores"
@@ -26,7 +26,7 @@ const AppRouter = () => {
           </>
         ) : (
           <>
-            <Route path="/" element={<Login url={url + "Usuarios/"} />} />
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
           </>
         )}
