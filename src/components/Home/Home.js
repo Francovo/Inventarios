@@ -125,7 +125,7 @@ const Home = ({ url }) => {
               onOpen();
             }}
           >
-            ◌◈◌ Registrar Nueva Data ◌◈◌
+            ◌◈◌ Registrar Producto ◌◈◌
           </Button>
         </Stack>
 
