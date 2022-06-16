@@ -85,7 +85,7 @@ const Proveedores = ({ url }) => {
   useEffect(() => {
     if (Search.length >= 1) {
       const fuse = new Fuse(Proveedores, {
-        keys: ["Tipo", "Nombre_Producto"],
+        keys: ["Tipo", "Nombre_Proveedor"],
         includeScore: true,
         threshold: 0.2,
       });
