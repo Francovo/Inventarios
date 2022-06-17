@@ -1,12 +1,5 @@
 import {
   Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Table,
   Tbody,
   Td,
@@ -14,39 +7,32 @@ import {
   Thead,
   Tr,
   useDisclosure,
-  FormControl,
   Input,
-  InputGroup,
-  InputLeftElement,
   Box,
   Stack,
 } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import "../styles/Home.scss";
 import axios from "axios";
 import Fuse from "fuse.js";
-import React, { useEffect, useState } from "react";
-import ModalProveedores from "./Proveedores/ModalProveedores";
+import ModalHome from "./Home/ModalHome";
 
-const Proveedores = ({ url }) => {
-  const [Proveedores, setProveedores] = useState([]);
+const Home = ({ url }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [DataInventario, setDataInventario] = useState([]);
   const [Search, setSearch] = useState("");
   const [DataSearch, setDataSearch] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getData = () => {
     axios
       .get(url)
       .then((response) => {
-        setProveedores(response.data);
-        console.log(response);
+        setDataInventario(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const deleteData = (id) => {
     axios
@@ -59,20 +45,24 @@ const Proveedores = ({ url }) => {
       });
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+
   /////////////////////// Barra de Busqueda ///////////////////////
   useEffect(() => {
     if (Search.length >= 1) {
-      const fuse = new Fuse(Proveedores, {
-        keys: ["Tipo", "Nombre_Proveedor"],
+      const fuse = new Fuse(DataInventario, {
+        keys: ["Tipo", "Nombre_Producto"],
         includeScore: true,
         threshold: 0.2,
       });
       const result = fuse.search(Search);
       setDataSearch(result.map((item) => item.item));
     } else {
-      setDataSearch(Proveedores);
+      setDataSearch(DataInventario);
     }
-  }, [Proveedores, Search]);
+  }, [DataInventario, Search]);
 
   return (
     <div className="ContainerAll">
@@ -100,10 +90,10 @@ const Proveedores = ({ url }) => {
               onOpen();
             }}
           >
-            ◌◈◌ Registrar Nuevo Proveedor ◌◈◌
+            ◌◈◌ Registrar Producto ◌◈◌
           </Button>
         </Stack>
-        <ModalProveedores
+        <ModalHome
           isOpen={isOpen}
           onClose={onClose}
           setDataSearch={setDataSearch}
@@ -117,31 +107,20 @@ const Proveedores = ({ url }) => {
               <Th>Id</Th>
               <Th>Tipo</Th>
               <Th>Nombre</Th>
-              <Th>Numero De Contacto</Th>
-              <Th>Pago a realizar</Th>
+              <Th>Precio Unidad</Th>
+              <Th>Cantidad</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {DataSearch.map((data) => (
-              <Tr key={data.id}>
+            {DataSearch.map((data, index) => (
+              <Tr key={index} maxWidth="100vw">
                 <Td>{data.id}</Td>
                 <Td>{data.Tipo}</Td>
-                <Td>{data.Nombre_Proveedor}</Td>
-                <Td>{data.Contacto}</Td>
-                <Td>{data.Deuda_Mensual}</Td>
-                <Td>
-                  {/* <Button
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      console.log("laksdjlaksjd");
-                    }}
-                  >
-                    Editar
-                  </Button> */}
-                </Td>
+                <Td>{data.Nombre_Producto}</Td>
+                <Td>{data.Precio_Producto}</Td>
+                <Td>{data.Cantidad_Producto}</Td>
                 <Td>
                   <Button
-                    style={{ cursor: "pointer" }}
                     onClick={() => {
                       deleteData(data.id);
                     }}
@@ -158,4 +137,4 @@ const Proveedores = ({ url }) => {
   );
 };
 
-export default Proveedores;
+export default Home;

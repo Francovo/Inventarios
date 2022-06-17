@@ -1,43 +1,32 @@
 import {
   Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+  useDisclosure,
+  Input,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
-  useDisclosure,
-  FormControl,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Box,
   Stack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Fuse from "fuse.js";
 import React, { useEffect, useState } from "react";
-import ModalProveedores from "./Proveedores/ModalProveedores";
+import ModalNominas from "./Nominas/ModalNominas";
 
-const Proveedores = ({ url }) => {
-  const [Proveedores, setProveedores] = useState([]);
+const Nominas = ({ url }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [Empleados, setEmpleados] = useState([]);
   const [Search, setSearch] = useState("");
   const [DataSearch, setDataSearch] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getData = () => {
     axios
       .get(url)
       .then((response) => {
-        setProveedores(response.data);
-        console.log(response);
+        setEmpleados(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -62,17 +51,17 @@ const Proveedores = ({ url }) => {
   /////////////////////// Barra de Busqueda ///////////////////////
   useEffect(() => {
     if (Search.length >= 1) {
-      const fuse = new Fuse(Proveedores, {
-        keys: ["Tipo", "Nombre_Proveedor"],
+      const fuse = new Fuse(Empleados, {
+        keys: ["CC", "Nombre_Empleado", "Eps"],
         includeScore: true,
         threshold: 0.2,
       });
       const result = fuse.search(Search);
       setDataSearch(result.map((item) => item.item));
     } else {
-      setDataSearch(Proveedores);
+      setDataSearch(Empleados);
     }
-  }, [Proveedores, Search]);
+  }, [Empleados, Search]);
 
   return (
     <div className="ContainerAll">
@@ -85,9 +74,9 @@ const Proveedores = ({ url }) => {
               placeholder="Buscar Usuario"
               size="md"
               width={{ base: "300px", md: "500px" }}
-              onChange={(e) => {
-                setSearch(e.currentTarget.value);
-              }}
+                onChange={(e) => {
+                  setSearch(e.currentTarget.value);
+                }}
             />
           </Box>
 
@@ -100,14 +89,11 @@ const Proveedores = ({ url }) => {
               onOpen();
             }}
           >
-            ◌◈◌ Registrar Nuevo Proveedor ◌◈◌
+            ◌◈◌ Registrar Producto ◌◈◌
           </Button>
         </Stack>
-        <ModalProveedores
-          isOpen={isOpen}
-          onClose={onClose}
-          setDataSearch={setDataSearch}
-        />
+
+        <ModalNominas isOpen={isOpen} onClose={onClose} setDataSearch = {setDataSearch}/>
       </div>
 
       <div className="containerTabla">
@@ -115,33 +101,22 @@ const Proveedores = ({ url }) => {
           <Thead>
             <Tr maxWidth="100vw">
               <Th>Id</Th>
-              <Th>Tipo</Th>
-              <Th>Nombre</Th>
-              <Th>Numero De Contacto</Th>
-              <Th>Pago a realizar</Th>
+              <Th>CC</Th>
+              <Th>Nombre_Empleado</Th>
+              <Th>Eps</Th>
+              <Th>Salario</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {DataSearch.map((data) => (
-              <Tr key={data.id}>
+            {DataSearch.map((data, index) => (
+              <Tr key={index} maxWidth="100vw">
                 <Td>{data.id}</Td>
-                <Td>{data.Tipo}</Td>
-                <Td>{data.Nombre_Proveedor}</Td>
-                <Td>{data.Contacto}</Td>
-                <Td>{data.Deuda_Mensual}</Td>
-                <Td>
-                  {/* <Button
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      console.log("laksdjlaksjd");
-                    }}
-                  >
-                    Editar
-                  </Button> */}
-                </Td>
+                <Td>{data.CC}</Td>
+                <Td>{data.Nombre_Empleado}</Td>
+                <Td>{data.Eps}</Td>
+                <Td>{data.Salario}</Td>
                 <Td>
                   <Button
-                    style={{ cursor: "pointer" }}
                     onClick={() => {
                       deleteData(data.id);
                     }}
@@ -158,4 +133,4 @@ const Proveedores = ({ url }) => {
   );
 };
 
-export default Proveedores;
+export default Nominas;
