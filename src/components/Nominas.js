@@ -89,7 +89,7 @@ const Nominas = ({ url }) => {
               onOpen();
             }}
           >
-            ◌◈◌ Registrar Producto ◌◈◌
+            ◌◈◌ Registrar Empleado ◌◈◌
           </Button>
         </Stack>
 

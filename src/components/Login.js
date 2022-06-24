@@ -1,17 +1,17 @@
 import { Avatar, Box, Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import '../styles/Login.scss'
 
 const Login = () => {
   const { loginWithRedirect } = useAuth0();
 
   return (
-    <div>
+    <div className="containerLogin">
       <Flex
         flexDirection="column"
         width="100wh"
         height="100vh"
-        backgroundColor="gray.300"
         justifyContent="center"
         alignItems="center"
       >
@@ -32,8 +32,7 @@ const Login = () => {
               <Stack
                 spacing={4}
                 p="1rem"
-                backgroundColor="whiteAlpha.900"
-                boxShadow="md"
+                border='none'
               >
                 <Button
                   borderRadius={0}
