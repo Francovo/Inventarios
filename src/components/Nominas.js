@@ -2,13 +2,16 @@ import { Button, useDisclosure, Input, Table, Tbody, Td, Th, Thead, Tr, Box, Sta
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
-import ModalNominas from './Nominas/ModalNominas';
+import ModalNominasPut from './Nominas/ModalNominasPut';
+import RegistrarNomina from './Nominas/RegistrarNomina';
 
 const Nominas = ({ url }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [Empleados, setEmpleados] = useState([]);
 	const [Search, setSearch] = useState('');
 	const [DataSearch, setDataSearch] = useState([]);
+	const [editData, setEditData] = useState([]);
+	const [stateModal, setStateModal] = useState(0);
 
 	const getData = () => {
 		axios
@@ -19,11 +22,8 @@ const Nominas = ({ url }) => {
 			.catch((error) => {
 				console.log(error);
 			});
+		setStateModal(0);
 	};
-
-	useEffect(() => {
-		getData();
-	}, []);
 
 	const deleteData = (id) => {
 		axios
@@ -35,6 +35,9 @@ const Nominas = ({ url }) => {
 				console.log(error);
 			});
 	};
+	useEffect(() => {
+		getData();
+	}, [stateModal]);
 
 	/////////////////////// Barra de Busqueda ///////////////////////
 	useEffect(() => {
@@ -54,36 +57,7 @@ const Nominas = ({ url }) => {
 	return (
 		<>
 			<div className="ContainerAll">
-				<div>
-					<Stack justifyContent="center" alignItems="center" padding="0.5rem">
-						<Box>
-							<Input
-								border="solid 1px"
-								borderColor="#6a32e2"
-								placeholder="Buscar Usuario"
-								size="md"
-								width={{ base: '300px', md: '500px' }}
-								onChange={(e) => {
-									setSearch(e.currentTarget.value);
-								}}
-							/>
-						</Box>
-
-						<Button
-							bg="purple.100"
-							// color="White"
-							_hover={{ bg: '#322659', color: 'white ' }}
-							_active={{ bg: '#000000' }}
-							onClick={() => {
-								onOpen();
-							}}>
-							◌◈◌ Registrar Empleado ◌◈◌
-						</Button>
-					</Stack>
-
-					<ModalNominas isOpen={isOpen} onClose={onClose} setDataSearch={setDataSearch} />
-				</div>
-
+				<RegistrarNomina />
 				<div className="containerTabla">
 					<Table variant="striped" colorScheme="purple">
 						<Thead>
@@ -96,13 +70,22 @@ const Nominas = ({ url }) => {
 							</Tr>
 						</Thead>
 						<Tbody>
-							{DataSearch.map((data, index) => (
+							{DataSearch?.map((data, index) => (
 								<Tr key={index} maxWidth="100vw">
 									<Td>{data.id}</Td>
 									<Td>{data.CC}</Td>
 									<Td>{data.Nombre_Empleado}</Td>
 									<Td>{data.Eps}</Td>
 									<Td>{data.Salario}</Td>
+									<Td>
+										<Button
+											onClick={() => {
+												onOpen();
+												setEditData(data);
+											}}>
+											Editar
+										</Button>
+									</Td>
 									<Td>
 										<Button
 											onClick={() => {
@@ -113,6 +96,7 @@ const Nominas = ({ url }) => {
 									</Td>
 								</Tr>
 							))}
+							<ModalNominasPut isOpen={isOpen} onClose={onClose} editData={editData} stateModal={setStateModal} />
 						</Tbody>
 					</Table>
 				</div>
