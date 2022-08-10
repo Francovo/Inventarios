@@ -36,7 +36,7 @@ const ModalNominasPut = ({ isOpen, onClose, editData, stateModal }) => {
 					<ModalOverlay />
 					<ModalContent>
 						<form onSubmit={handleSubmit}>
-							<ModalHeader>Editar Producto</ModalHeader>
+							<ModalHeader>Editar Nomina</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody>
 								<Stack>
