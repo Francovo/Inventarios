@@ -59,7 +59,7 @@ const Nominas = ({ url }) => {
 			<div className="ContainerAll">
 				<RegistrarNomina />
 				<div className="containerTabla">
-					<Table variant="striped" colorScheme="purple">
+					<Table variant="striped" colorScheme="cyan">
 						<Thead>
 							<Tr maxWidth="100vw">
 								<Th>Id</Th>

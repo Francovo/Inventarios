@@ -93,21 +93,28 @@ const Proveedores = ({ url }) => {
 						</Box>
 
 						<Button
-							bg="purple.100"
+							bg="cyan.300"
 							// color="White"
-							_hover={{ bg: '#322659', color: 'white ' }}
+							_hover={{ bg: '#065666', color: 'white ' }}
 							_active={{ bg: '#000000' }}
 							onClick={() => {
 								onOpen();
 							}}>
 							◌◈◌ Registrar Nuevo Proveedor ◌◈◌
 						</Button>
+						<Button
+							bg="cyan.100"
+							// color="White"
+							_hover={{ bg: '#065666', color: 'white ' }}
+							_active={{ bg: '#000000' }}>
+							◌◈◌ Descargar informe ◌◈◌
+						</Button>
 					</Stack>
 					<ModalProveedores isOpen={isOpen} onClose={onClose} setDataSearch={setDataSearch} />
 				</div>
 
 				<div className="containerTabla">
-					<Table variant="striped" colorScheme="purple">
+					<Table variant="striped" colorScheme="cyan">
 						<Thead>
 							<Tr maxWidth="100vw">
 								<Th>Id</Th>

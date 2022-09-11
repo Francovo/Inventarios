@@ -22,14 +22,21 @@ const RegistrarProducto = ({ setSearch, setDataSearch }) => {
 				</Box>
 
 				<Button
-					bg="purple.100"
+					bg="cyan.300"
 					// color="White"
-					_hover={{ bg: '#322659', color: 'white ' }}
+					_hover={{ bg: '#065666', color: 'white ' }}
 					_active={{ bg: '#000000' }}
 					onClick={() => {
 						onOpen();
 					}}>
 					◌◈◌ Registrar Producto ◌◈◌
+				</Button>
+				<Button
+					bg="cyan.100"
+					// color="White"
+					_hover={{ bg: '#065666', color: 'white ' }}
+					_active={{ bg: '#000000' }}>
+					◌◈◌ Descargar informe ◌◈◌
 				</Button>
 			</Stack>
 			<ModalPost isOpen={isOpen} onClose={onClose} setDataSearch={setDataSearch} />
